@@ -39,7 +39,7 @@ Reset::
 .waitVBlank
     ld a, [rLY]
     cp SCRN_Y
-    jr c, .waitVBlank
+    jr nz, .waitVBlank
     xor a
     ldh [rLCDC], a ; disable screen
 
@@ -61,7 +61,11 @@ Reset::
     dec b
     jr nz, .copyOAMDMA
 
-rst $38
+; TODO: Finish init and hand execution over to engine
+
+End
+    nop
+    jr End
 
 ; Copied into HRAM during init
 ; Performs OAM DMA with address (a << 8)
