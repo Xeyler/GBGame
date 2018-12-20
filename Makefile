@@ -32,7 +32,6 @@ $(DEPSDIR)/%.d: $(SRCDIR)/%.asm
 	@mkdir -p $(DEPSDIR)
 	@mkdir -p $(OBJDIR)
 	rgbasm -M $@.tmp -p 0xff -i $(SRCDIR)/ -o $(patsubst $(SRCDIR)/%.asm,$(OBJDIR)/%.o,$<) $<
-	# Re-format the dependency file into one that Make accepts
 	@sed 's,\($*\)\.o[ :]*,\1.o $@: ,g' < $@.tmp > $@
 	@rm $@.tmp
 
@@ -47,7 +46,7 @@ $(ROMFILE): $(patsubst $(SRCDIR)/%.asm,$(OBJDIR)/%.o,$(ASMFILES))
 	rgbfix -p 0xff -v $@
 
 # How to build the .o files
-# Note: This will not be used unless a .o file is missing and the corresponding .d dependency is not
+# Note: This will not be used unless a .o file is missing and the corresponding .d dependency is not missing
 $(OBJDIR)/%.o: $(SRCDIR)/%.asm
 	@mkdir -p $(OBJDIR)
 	rgbasm -p 0xff -i $(SRCDIR)/ -o $@ $<

@@ -7,13 +7,13 @@ hOAMDMA::
 ; Place variables that need to be zero-cleared on init (and soft-reset) below
 hClearStart::
 
-; Used to let VBlank know it need to ACK
-; NOTE: VBlank doesn't preserve AF **on purpose** when this is set
+; Used to let VBlank know it needs to ACK
+; IMPORTANT: VBlank doesn't preserve AF **on purpose** when this is set
 ; Thus, make sure to wait for Z set before continuing
 hVBlankFlag::
     db
 
-; Values transferred to high ram regs on VBlank
+; Values transferred to high ram regs on VBlank update request
 hLCDC::
     db
 hSCY::
@@ -31,11 +31,9 @@ hOBP0::
 hOBP1::
     db
 
-hFastCopyBank::
-    db
-hFastCopySrc::
+hVBlankCopySrc::
     dw
-hFastCopyDest::
+hVBlankCopyDest::
     dw
-hFastCopyLen::
+hVBlankCopyLen::
     db

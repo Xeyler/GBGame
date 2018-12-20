@@ -43,7 +43,7 @@ Reset::
     xor a
     ldh [rLCDC], a ; disable screen
 
-; FIXME: This resets rIE, but we overwrite it soon.
+; This resets rIE, but we overwrite it soon.
     ld c, LOW(hClearStart)
     xor a
 .clearHRAM
@@ -61,7 +61,19 @@ Reset::
     dec b
     jr nz, .copyOAMDMA
 
-; TODO: Finish init and hand execution over to engine
+    ; Re-enable screen
+    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_BG8000
+    ldh [rLCDC], a
+    ldh [hLCDC], a
+
+    ; Set and enable interrupts
+    ld a, IEF_VBLANK
+    ldh [rIE], a
+    xor a
+    ei
+    ldh [rIF], a
+
+; TODO: Hand initialization over to engine
 
 End
     nop

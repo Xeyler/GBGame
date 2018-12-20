@@ -1,5 +1,3 @@
-INCLUDE "macros/psuedo_instructions.asm"
-
 ; dbr value, nb_times
 ; Writes nb_times consecutive bytes with value.
 dbr: MACRO
@@ -20,4 +18,11 @@ ENDM
 ; Writes to a 16-bit register with two bytes
 lb: MACRO
     ld \1, ((\2) << 8) | (\3)
+ENDM
+
+wait_vram: MACRO
+.waitVRAM\@
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .waitVRAM
 ENDM
