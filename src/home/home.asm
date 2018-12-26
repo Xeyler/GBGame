@@ -10,7 +10,7 @@ EntryPoint::
 LogoFade: ; Fade the Nintendo logo to white
     xor a
     ldh [rAUDENA], a ; disable audio
-    ldh [rDIV], a ; FIXME: Is it necessary to reset rDIV? The APU uses it, but what if we didn't?
+    ldh [rDIV], a ; TODO: Is it necessary to reset rDIV? The APU uses it, but what if we didn't?
 .fadeLogo
     ld c, 8 ; Number of frames between each logo fade step
 .logoWait
@@ -23,18 +23,21 @@ LogoFade: ; Fade the Nintendo logo to white
     jr c, .waitVBlank ; if rLY is less than the screen's height, goto .waitVBlank 
     dec c
     jr nz, .logoWait ; if c is nz, goto .logoWait
+    ; Fade the palette by one level
     ld a, [rBGP]
     call GetFadedPalette
     ld [rBGP], a
     jr nz, .fadeLogo ; End if the palette is fully blank(GetFadedPalette sets ZF when new palette is white)
 
+; Soft-reset to here.
+; Reset SP, disable audio, disable screen, clear HRAM, copy OAMDMA function into HRAM, jump to Start
 Reset::
     di
     ld sp, wStackBottom ; reset stack
 
     xor a
     ldh [rAUDENA], a ; disable audio
-    ldh [rDIV], a ; FIXME: Is it necessary to reset rDIV? The APU uses it, but what if we didn't?
+    ldh [rDIV], a ; TODO: Is it necessary to reset rDIV? The APU uses it, but what if we didn't?
 
 .waitVBlank
     ld a, [rLY]
@@ -43,6 +46,7 @@ Reset::
     xor a
     ldh [rLCDC], a ; disable screen
 
+; Clear HRAM
 ; This resets rIE, but we overwrite it soon.
     ld c, LOW(hClearStart)
     xor a
@@ -61,23 +65,7 @@ Reset::
     dec b
     jr nz, .copyOAMDMA
 
-    ; Re-enable screen
-    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_BG8000
-    ldh [rLCDC], a
-    ldh [hLCDC], a
-
-    ; Set and enable interrupts
-    ld a, IEF_VBLANK
-    ldh [rIE], a
-    xor a
-    ei
-    ldh [rIF], a
-
-; TODO: Hand initialization over to engine
-
-End
-    nop
-    jr End
+jp Start
 
 ; Copied into HRAM during init
 ; Performs OAM DMA with address (a << 8)

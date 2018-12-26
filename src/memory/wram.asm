@@ -7,7 +7,7 @@ wStackBottom::
 SECTION "OAMBuffer", WRAM0, ALIGN[8]
 
 wOAMBuffer::
-    ds $9F
+    ds $A0
 
 SECTION "WRAMVars", WRAM0
 

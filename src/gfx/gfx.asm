@@ -16,7 +16,7 @@ GetFadedPalette::
     ret
 
 ; Waits BC number of frames
-; @param BC: Number of frames to halt for
+; @param BC: Number of frames to wait for
 ; @value A: 0
 WaitFrames::
     call WaitVBlank
