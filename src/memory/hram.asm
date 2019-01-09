@@ -9,7 +9,7 @@ hClearStart::
 
 ; Used to let VBlank know it needs to ACK
 ; IMPORTANT: VBlank doesn't preserve AF **on purpose** when this is set
-; Thus, make sure to wait for Z set before continuing
+; Thus, make sure to wait for the Z flag before continuing
 hVBlankFlag::
     db
 

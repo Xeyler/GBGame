@@ -65,7 +65,7 @@ Reset::
     dec b
     jr nz, .copyOAMDMA
 
-jp StartEngine
+jp StartTitle
 
 ; Copied into HRAM during init
 ; Performs OAM DMA with address (a << 8)

@@ -1,4 +1,3 @@
-
 ; RST address labels
 rst38_error EQU $38
 

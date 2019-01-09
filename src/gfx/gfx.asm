@@ -15,20 +15,6 @@ GetFadedPalette::
     sub c
     ret
 
-; Waits BC number of frames
-; @param BC: Number of frames to wait for
-; @value A: 0
-WaitFrames::
-    call WaitVBlank
-    dec bc
-    ld a, b
-    cp 0
-    jr nz, WaitFrames
-    ld a, c
-    cp 0
-    jr nz, WaitFrames
-    ret
-
 ; Waits for the VBlank interrupt
 ; Note: if the interrupt occurs without being waited for, it will skip performing some actions
 WaitVBlank::
