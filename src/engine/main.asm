@@ -1,16 +1,15 @@
 SECTION "Engine", ROM0
 ; Here, we assume that interrupts are disabled and the screen is off. 
-StartTitle::
-
+TitleScreen::
 ; Load title screen
     ld de, TitleScreenTilesheet
     ld hl, _VRAM
     ld bc, TitleScreenTilesheet.end - TitleScreenTilesheet
     call Memcpy
-    ;ld de, TitleScreenMap
-    ;ld hl, _SCRN1
-    ;ld bc, TitleScreenMap.end - TitleScreenMap
-    ;call Memcpy
+    ld de, TitleScreenMap
+    ld hl, _SCRN1
+    ld bc, TitleScreenMap.end - TitleScreenMap
+    call Memcpy
 
 ; Reset palette
     ld a, %11100100
@@ -28,3 +27,13 @@ StartTitle::
     xor a
     ei
     ldh [rIF], a
+
+; TODO: Fade in the title screen
+
+.waitForButtonPress
+    call WaitVBlank
+    ldh a, [hChangedInput]
+    cp 0
+    jp z, .waitForButtonPress
+
+; TODO: Start game

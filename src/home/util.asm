@@ -1,5 +1,5 @@
 SECTION "Util", ROM0
-; Copy data at [de] into [hl] of lengh bc
+; Copy data at [de] into [hl] of lengh bc(bc must not be 0)
 ; @param DE: Source address
 ; @param HL: Destination address
 ; @param BC: Length
