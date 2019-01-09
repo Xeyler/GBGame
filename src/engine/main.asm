@@ -1,5 +1,5 @@
 SECTION "EngineStart", ROM0
-Start::
+StartEngine::
 ; Here, we assume that interrupts are disabled and the screen is off. 
 
 ; Re-enable screen
