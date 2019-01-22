@@ -16,7 +16,7 @@ GetFadedPalette::
     ret
 
 ; Waits for the VBlank interrupt
-; Note: if the interrupt occurs without being waited for, it will skip performing some actions
+; Note: You must wait for VBlank for the handler to perform its task
 WaitVBlank::
     xor a
     inc a ; set zero flag to false and signal VBlank
@@ -26,7 +26,7 @@ WaitVBlank::
     jr z, .waitVBlank
     ret
 
-; Waits for the VBlank interrupt
+; Waits for the VBlank interrupt with an OAM DMA request
 ; Note: if the interrupt occurs without being waited for, it will skip performing some actions
 WaitVBlankWithOAMDMA::
     xor a
@@ -94,34 +94,6 @@ VBlankHandler::
     call hOAMDMA
 
 .skipOAMDMA
-
-; Get joypad input
-    ; Save last frame for comparing later
-    ld a, [hCurrentFrameInput]
-    ld b, a
-
-    ld a, %00010000 ; a, b, select, start buttons
-    ld [rP1], a
-    ld a, [rP1] ; debounce
-    ld a, [rP1]
-    ld a, [rP1]
-    ld a, [rP1]
-    and $0F
-    swap a
-    ld c, a
-    ld a, %00100000 ; direction buttons
-    ld [rP1], a
-    ld a, [rP1] ; again, debounce
-    ld a, [rP1]
-    ld a, [rP1]
-    ld a, [rP1]
-    and $0F
-    or c
-    cpl ; invert bits because 0 == pressed doesn't make logical sense
-
-    ldh [hCurrentFrameInput], a
-    xor b
-    ldh [hChangedInput], a
 
     ; Return with zero flag not set
     pop af

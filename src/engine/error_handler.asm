@@ -6,3 +6,7 @@ NullExecutionError:: ; TODO: Maybe actually make a proper handler??
 Rst38Error:: ; TODO: Maybe actually make a proper handler??
     nop 
     jp Rst38Error
+
+UnknownEngineStateError:: ; TODO: Maybe actually make a proper handler??
+    nop
+    jp UnknownEngineStateError

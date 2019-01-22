@@ -38,11 +38,12 @@ hVBlankCopyDest::
 hVBlankCopyLen::
     db
 
-; hCurrentFrameInput only changes after VBlankHandler has processed.
-; Request VBlankHandler to update input
-hCurrentFrameInput::
+hEngineState::
     db
-; hChangedInput only changes after VBlankHandler has processed.
-; Request VBlankHandler to update input
+hCurrentArea::
+    db
+
+hCurrentInput::
+    db
 hChangedInput::
     db
