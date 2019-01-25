@@ -4,11 +4,6 @@
 
 include Make.conf
 
-SRCDIR 	= src
-OBJDIR 	= obj
-BINDIR 	= bin
-DEPSDIR = deps
-
 # Target output
 ROMFILE = $(BINDIR)/$(ROMName).$(ROMExt)
 
