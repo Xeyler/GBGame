@@ -22,6 +22,12 @@ rebuild:
 	$(MAKE) clean
 	$(MAKE) all
 
+.PHONY: test
+test:
+	@$(MAKE) all
+	@echo " NOTE: 'make test' only works on WSL with bgb in the host Windows environment path"
+	bgb.exe -rom "$(shell wslpath -m `pwd`)/$(ROMFILE)" -watch
+
 # Generate dependencies
 $(DEPSDIR)/%.d: $(SRCDIR)/%.asm
 	@mkdir -p $(DEPSDIR)
