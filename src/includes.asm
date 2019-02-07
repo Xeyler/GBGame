@@ -4,3 +4,4 @@ INCLUDE "constants/hardware.inc"
 INCLUDE "constants/custom_constants.asm"
 
 INCLUDE "macros/macros.asm"
+INCLUDE "macros/debug_message.asm"
