@@ -4,8 +4,19 @@
 
 include Make.conf
 
+# Code and compilation directories
+SRCDIR 	= src
+OBJDIR 	= obj
+BINDIR 	= bin
+DEPSDIR = deps
+
+# RGBDS arguements
+ASFLAGS += -E -i $(SRCDIR)/ -p $(PadValue)
+LDFLAGS += -p $(PadValue)
+FXFLAGS += -v -k $(NewLicensee) -l $(OldLicensee) -m $(MBCType) -n $(ROMVersion) -p $(PadValue) -r $(SRAMSize) -t $(ROMTitle)
+
 # Target output
-ROMFILE = $(BINDIR)/$(ROMName).$(ROMExt)
+ROMFILE = $(BINDIR)/$(ROMFileName).gb
 
 # The list of "root" ASM files that RGBASM will be invoked on
 ASMFILES := $(wildcard $(SRCDIR)/*.asm)
@@ -28,7 +39,7 @@ bgb: all
 $(DEPSDIR)/%.d: $(SRCDIR)/%.asm
 	@mkdir -p $(DEPSDIR)
 	@mkdir -p $(OBJDIR)
-	rgbasm -M $@.tmp -p 0xff -i $(SRCDIR)/ -o $(patsubst $(SRCDIR)/%.asm,$(OBJDIR)/%.o,$<) $<
+	rgbasm $(ASFLAGS) -M $@.tmp -o $(patsubst $(SRCDIR)/%.asm,$(OBJDIR)/%.o,$<) $<
 	@sed 's,\($*\)\.o[ :]*,\1.o $@: ,g' < $@.tmp > $@
 	@rm $@.tmp
 
@@ -41,11 +52,11 @@ endif
 $(ROMFILE): $(patsubst $(SRCDIR)/%.asm,$(OBJDIR)/%.o,$(ASMFILES))
 	@mkdir -p $(BINDIR)
 
-	rgblink -p 0xff -t -d -o $@ -m $(BINDIR)/$(ROMName).map -n $(BINDIR)/$(ROMName).sym $^
-	rgbfix -p 0xff -v $@
+	rgblink $(LDFLAGS) -o $@ -m $(BINDIR)/$(ROMFileName).map -n $(BINDIR)/$(ROMFileName).sym $^
+	rgbfix $(FXFLAGS) $@
 
 # How to build the .o files
 # Note: This will not be used unless a .o file is missing and the corresponding .d dependency is not missing
 $(OBJDIR)/%.o: $(SRCDIR)/%.asm
 	@mkdir -p $(OBJDIR)
-	rgbasm -p 0xff -i $(SRCDIR)/ -o $@ $<
+	rgbasm $(ASFLAGS) -o $@ $<
