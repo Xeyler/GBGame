@@ -1,5 +1,5 @@
 INCLUDE "includes.asm"
 
-INCLUDE "res/graphics/sprites/sprites.asm"
-INCLUDE "res/graphics/tilesheets/tilesheets.asm"
-INCLUDE "res/maps/tilemaps.asm"
+INCLUDE "res/sprites/sprites.asm"
+INCLUDE "res/areas/tilesheets/tilesheets.asm"
+INCLUDE "res/areas/areas.asm"

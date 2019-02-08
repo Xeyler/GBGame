@@ -67,6 +67,7 @@ StateMachineMenu::
 
 SECTION "StateMachineLoadingArea", ROM0
 StateMachineLoadingArea::
+    ; Load requested area's tilesheet
     ; Load requested area
     ; Set player position
     jp EngineMainLoop.stateMachineEnd
