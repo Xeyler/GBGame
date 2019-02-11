@@ -5,13 +5,28 @@ enable_debug EQU 1
 if def(enable_debug) && enable_debug == 1
 debug_message: MACRO
         ld  d, d
-        jr .end\@
+        jr .message_end\@
         DW $6464
         DW $0000
         DB \1
-.end\@:
+.message_end\@:
+ENDM
+
+debug_variable: MACRO
+        push hl
+        ld hl, \1
+        ld d, d
+        jr .message_end\@
+        DW $6464
+        DW $0000
+        DB "%(HL)%"
+.message_end\@
+pop hl
 ENDM
 else
-debug_message: MACRO
-ENDM
+debug_message: macro
+endm
+debug_variable: macro
+endm
 endc
+
